@@ -1,0 +1,202 @@
+langchain is a open source framework for connecting lage language models(LLMs),data sources,other functionality under a unified syntax
+Allows for scalability
+Contains modular components
+Support python and java script
+Core componentsof langchain :-
+1.chains
+2.prompts
+3.agents
+4.Retrievers
+5.LLMs(includinf open source and propietary models)
+
+Hugging face:-Open source repository of models,datasets, and tools
+1.Creating a Hugging Face API key!.Sign in for a Hugging face account
+2.Navigate to https://huggingface.co/settings/tokens
+3.Select new token and copy the key
+
+Using huggingface and OpenAI API models using langchain
+1.Hugging Face(falcon-7b)
+from langchain_huggingface import HuggingFaceEndpoint
+llm=HuggingFaceEndpoint(repo_id='tiiuae/falcon-7b-instruct',
+huggingfacehub_api_token=huggingfacehub_api_token)
+question='Can you still have fun'
+output=llm.invoke(question)
+print(output)
+2.OpenAI(gpt-3.5-turbo-instruct)
+from langchain_openai import OpenAI
+llm=OpenAI(model='gpt-3.5-turbo-instruct',
+api_key=openai_api_key)
+question='Can you still have fun'
+output=llm.invoke(question)
+print(output)
+Both the model will show different output...
+
+Prompting startegies for chatbots:-
+Thousands of LLMs are available in langchain library via huggingface hub api
+
+Prompt templates:-
+from langchain_core.prompts import PromptTemplate 
+template='you are a artificial intelligence assistant, answer the question. {question}'
+promt_template=PromptTemplate(template=template,input_variables=['question'])
+print(promt_template.invoke({'question':'What is langchain'}))
+
+Integrating promptTemplate with LLMs
+from langchain_huggingface import HuggingFaceEndpoint
+llm=HuggingFaceEndpoint(repo_id='tiiuae/falcon-7b-instruct'
+huggingfacehub_api_token=huggingfacehub_api_token)
+llm_chain=promt_template | llm
+question='What is a langchain'
+print(ll_chain.invoke({'question':question}))
+LCEL=LangChain expression language
+Chain=connect calls to different components
+
+Chat models
+from langchain_core.prompts import ChatPromptTemplate
+prompt_template=ChatPromptTemplate.from_messages(
+    [('system','You are a soto zen master Roshi.'),
+     ('human','What is the essence of Zen?'),
+     ('ai','When you are hungry, eat.When you are tried, sleep.')
+     ('human','Respond to the question:{question}')
+    ]
+)
+Integrating ChatPromptTemplate
+from langchain_openai import OpenAI
+llm=OpenAI(model='gpt-3.5-turbo-instruct',
+api_key=openai_api_key)
+llm_chain=promt_template | llm
+question='what is the sound of one hand clapping?'
+response=llm_chain.invoke({'question':question})
+print(response.content)
+
+Limitations of standard prompt templates
+PromptTemplate and ChatPromptTemplate
+1.handling small numbers of examples
+2.Don't scale to large numbers 
+FewShotPromptTemplate used to provide for context to the model
+from langchain_core.prompts import FewShotPromptTemplate,PromptTemplate
+exapmle_prompt=PromptTemplate.form_template("Question: {question\n{answer}}")
+prompt=exapmle_prompt.invoke({"question":"What is the capital of Italy?
+                              "answer":"rome"})
+print(prompt.text)                          
+FewShotPromptTemplate:-
+promt_template=FewShotPromptTemplate(
+    examples=examples,    examples:list of dicts
+    exapmle_prompt=exapmle_prompt,exapmle_prompt:formatted template                                    
+    suffix="Question:{input}",suffix:suffix to add to to the input
+    input_variables=['input']
+)
+prompt=prompt_template.invoke({'input':'What is the name of Henry Campbell's dog?'})
+print(prompt.text)
+ Integrating with a chain
+ from langchain_openai import OpenAI
+llm=OpenAI(model='gpt-3.5-turbo-instruct',
+api_key=openai_api_key)
+llm_chain=promt_template | llm
+response=llm_chain.invoke({'input':'What is the name of henry campbell's dog?'})
+print(response.content)
+
+Sequential chains
+Some problems can be only be silved Sequentially....
+consider a chatbot used to create a travel itinerary we need to tell to chatbot about destnations we receive 
+suggestions on what to see on our trip and tell the model which activities to select to compile the itinerary
+It is a sequential problem is it requires more than one user input, one to specify the destination
+and another to select the activities.
+In sequential chain the output from one chain becomes the input to another
+destination_prompt=PromptTemplate(
+    input_variables=['destination']'
+    template='I am planning a trip to {destination}.Can you suggest some activitiesto do there?'
+)
+activities_prompt=PromptTemplate(
+    input_variables=['activities'],
+    template='I only have one day, so can you create a itinerary from your top three activities: {activities}.'
+)
+llm=ChatOpenAI(model='gpt-4o-mini',api_key=openai_api_key)                   We define our model and bgin the sequential chain
+seq_chain=({'activities':destination_prompt | llm | StrOutputParser()}       We start by defining a dictionary that passes our destination_prompt template
+   | activities_prompt                                                       to LLM and parses the output a string assigned as activities which is input for 
+   | llm                                                                     activities_prompt which is passed to LLM generate the intenrary which is parsed as a string
+   | StrOutputParser())
+
+print(seq_chain.invoke({'destination':'Rome'}))
+
+Agents 
+uses LLms to take actions
+Tools:functios called by agent to take actions.
+ReAct agents=Reason+actions
+To implement agents we need to use Langraph
+Langraph:-
+1.branch of langchain centered around designing agent systems
+2.Unified,tool-agnostic syntax
+
+from Langraph.prebuilt import create_react_agent
+from Langraph_community.agent_toolkits.load_tools
+
+llm=ChatOpenAI('gpt-4o-mini',api_key=openai_api_key)
+tools=load_tools(['llm-math'],llm=llm)
+agent=create_react_agent(llm,tool)
+messages=agent.invoke({'messages':[('human','what is the square root of 101?')]})
+print(messages)
+print(messages['messages'][-1].content) to print the content
+
+OpenAI offers two primary API interfaces, each with its own set of models:
+Chat Completions API (chat.completions.create): This is the modern, recommended API. It uses a conversational format with system, user, and assistant messages.
+gpt-4-turbo, gpt-4: Top-tier models for complex tasks.
+gpt-3.5-turbo: The workhorse model, perfect for most tasks. Always prefer the latest version (e.g., gpt-3.5-turbo-0125).
+Legacy Completions API (completions.create): This is the older API that your original code uses. It takes a single text prompt and returns a completion.
+text-davinci-003: The most capable model in this family, but now deprecated and more expensive than gpt-3.5-turbo.
+davinci, curie, babbage, ada: Even older, less capable base models.
+
+A Few-Shot Prompt Template is a prompt that includes several examples (the "shots") of a task and its
+desired output, followed by the actual task you want the model to perform. 
+The model learns the pattern, format, and style from these examples and applies it to the new input.
+
+from openai import OpenAI
+
+client = OpenAI(api_key="your_api_key")
+
+response = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    temperature=0,  # Low temperature for more deterministic, factual outputs
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant that classifies sentiment."},
+        {"role": "user", "content": "The product broke after two days of use."},
+        {"role": "assistant", "content": "negative"},
+        {"role": "user", "content": "It's okay, nothing special really."},
+        {"role": "assistant", "content": "neutral"},
+        {"role": "user", "content": "The package arrived early and everything was perfect!"},
+        {"role": "assistant", "content": "positive"},
+        {"role": "user", "content": "I absolutely loved the concert last night, the band was incredible!"}
+    ]
+)
+
+print(response.choices[0].message.content)
+# This will output: positive
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,46 @@
+from typing import List, Optional
+
+# 1. Basic variable annotations
+name: str = "Alice"
+age: int = 25
+score: float = 95.5
+is_passed: bool = True
+
+# 2. Function with type annotations
+def multiply(a: float, b: float) -> float:
+    return a * b
+
+# 3. Class with type annotations
+class Student:
+    def __init__(self, name: str, age: int, grades: Optional[List[float]] = None) -> None:
+        self.name: str = name
+        self.age: int = age
+        self.grades: List[float] = grades or []
+    
+    def add_grade(self, grade: float) -> None:
+        self.grades.append(grade)
+    
+    def get_average(self) -> float:
+        return sum(self.grades) / len(self.grades) if self.grades else 0.0
+    
+    def can_vote(self) -> bool:
+        return self.age >= 18
+
+# 4. Using the class
+student1 = Student("Bob", 20, [85.0, 92.0])
+student2 = Student("Charlie", 17)
+
+student1.add_grade(88.0)
+student2.add_grade(76.0)
+
+# 5. Testing everything
+print("Basic variables:")
+print(f"{name} is {age} years old, score: {score}, passed: {is_passed}")
+
+print("\nFunction result:")
+result = multiply(4.5, 2.0)
+print(f"Multiplication result: {result}")
+
+print("\nStudent details:")
+print(f"{student1.name}: Average {student1.get_average()}, Can vote: {student1.can_vote()}")
+print(f"{student2.name}: Average {student2.get_average()}, Can vote: {student2.can_vote()}")

@@ -1,0 +1,11 @@
+ValueError-occurs when input argument/value to function is inapppropiate eg-sqrt("name")
+IOError-Happens when file cannot be opened
+KeyboardInterrupt-Happens when you enter CTRL+C/DELETE/ESC during normal flow of program.
+ImportError-Happens when requested module is not present
+EOFError-Happens when end of file condition is reached without reading any data by input()
+ZeroDivisionError-Happens when you try to divvide by zero 
+IndexError-Happen when you try to access index beyond the limit
+NameError-This error occurs when a variable is not defined
+IndentationError-Happens when you give incorrect indentation to code
+TypeError-incorrect datatype related error eg-"name"+10
+OverflowError-Happens when result exceeds memory limit of specified datatype

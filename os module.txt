@@ -1,0 +1,127 @@
+os.environ is a mapping object (like a dictionary) in Python's os module that represents the user's
+environment variables. Environment variables are key-value pairs stored by the operating system,
+often used to configure system behavior for applications.
+Access Variables: Retrieve values using os.environ['VAR_NAME']
+or os.environ.get('VAR_NAME') (safer, returns None if missing).
+Does os.environ Change System Environment Variables?
+No, changes made to os.environ are not permanent and do not affect system-wide environment variable settings.
+They only affect: 1.The current Python process
+2.Any child processes launched from it
+Once your Python script ends, all changes made to os.environ are lost.
+# Safe way to access environment variables
+api_key = os.environ.get('API_KEY')  # Returns None if not set
+
+# Unsafe way (raises KeyError if variable doesn't exist)
+# api_key = os.environ['API_KEY']
+1. File and Directory Operations
+os.getcwd() - Get current working directory
+
+os.chdir(path) - Change current working directory
+
+os.listdir(path) - List directory contents
+
+os.mkdir(path) - Create a directory
+
+os.makedirs(path) - Create directories recursively
+
+os.remove(path) - Remove a file
+
+os.rmdir(path) - Remove a directory
+
+os.rename(src, dst) - Rename a file or directory
+
+2. Process Management
+os.system(command) - Execute a shell command
+
+os.fork() - Create a child process (Unix)
+
+os.kill(pid, sig) - Send a signal to a process
+
+os.getpid() - Get current process ID
+
+os.getppid() - Get parent process ID
+
+3. Path Operations
+os.path.join(path1, path2) - Join paths intelligently
+
+os.path.exists(path) - Check if path exists
+
+os.path.isfile(path) - Check if path is a file
+
+os.path.isdir(path) - Check if path is a directory
+
+os.path.getsize(path) - Get file size
+
+os.path.abspath(path) - Get absolute path
+
+4. Environment Variables
+os.environ - Dictionary of environment variables
+
+os.getenv(var_name) - Get environment variable value
+
+os.putenv(var_name, value) - Set environment variable
+
+5. File Descriptor Operations
+os.open(path, flags) - Open a file
+
+os.close(fd) - Close a file descriptor
+
+os.read(fd, n) - Read from a file descriptor
+
+os.write(fd, str) - Write to a file descriptor
+
+6. System Information
+os.name - Name of OS ('posix', 'nt', 'java')
+
+os.uname() - Detailed system information (Unix)
+
+os.cpu_count() - Number of CPUs in system
+
+7. Miscellaneous
+os.urandom(n) - Generate random bytes
+
+os.umask(mask) - Set the current umask
+
+os.times() - Get process times
+
+
+from dotenv import load_dotenv
+import os
+
+# Load variables from .env file
+load_dotenv()
+
+# Now you can access them
+database_url = os.getenv('DATABASE_URL')
+api_key = os.getenv('API_KEY')
+example:
+DATABASE_URL=postgresql://user:pass@localhost/dbname
+API_KEY=your_secret_key_here
+DEBUG=True
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,53 @@
+Temprature variable in LLM
+Technically, temperature is a parameter that controls the randomness or entropy of the model's output
+by shaping the probability distribution of the next predicted token (word or word piece).
+
+Here’s the step-by-step process:
+
+Prediction: For the next word, the LLM calculates a probability score for every word in its vocabulary. This list of scores is called a "probability distribution."
+
+Example: The model predicts the next word after "The sky is" could be:
+
+blue (70% probability)
+
+clear (15% probability)
+
+spacious (5% probability)
+
+the (4% probability)
+
+green (1% probability)
+
+...and so on for thousands of other words.
+
+Applying Temperature: The temperature setting adjusts these probabilities before the model makes its final choice.
+
+It does this by dividing the logits (the raw output scores before they are converted to probabilities) by the temperature value.
+
+The Final Choice: The model then samples (picks) a word from this adjusted probability distribution.
+
+You might also see these parameters, which work alongside temperature to control output:
+
+Top-K: The model only considers the K most likely next words for selection. If K=3, it only chooses from the top 3 words (blue, clear, spacious from our example), ignoring all others.
+
+Top-P (Nucleus Sampling): The model considers the smallest set of words whose combined probability exceeds P. If P=0.9, it would keep adding the most probable words until the sum of their probabilities is >= 0.9, then choose only from that set. This is more dynamic than Top-K.
+
+
+Temperature	     Best For
+Low (0.0 - 0.3)	 Factual queries, code generation, consistency.
+Medium (0.5 - 0.7)	Chatbots, story writing, brainstorming.	
+High (0.8 - 1.5+)	Poetry, surrealism, generating multiple ideas.	
+
+
+
+
+
+
+
+
+
+
+
+
+
+

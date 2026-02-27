@@ -1,0 +1,7 @@
+f=open("sample.txt","r+")
+f.write("abc")
+data=f.read(3)
+d=f.readline()
+print(data)
+print(d)
+f.close()
